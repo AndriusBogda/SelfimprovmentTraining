@@ -1,4 +1,4 @@
-﻿namespace SeleniumTrainingCenter.PageObjects.PageInterfaces
+﻿namespace SeleniumTrainingCenter.PageObjects.Interfaces
 {
     public interface IPage
     {

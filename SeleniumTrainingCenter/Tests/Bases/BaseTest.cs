@@ -36,7 +36,8 @@ namespace SeleniumTrainingCenter.Tests.Bases
         {
             try
             {
-                _driver = new RemoteWebDriver(new System.Uri(_url), new ChromeOptions());
+                //_driver = new RemoteWebDriver(new System.Uri(_url), new ChromeOptions());
+                _driver = new ChromeDriver();
             }
             catch
             {

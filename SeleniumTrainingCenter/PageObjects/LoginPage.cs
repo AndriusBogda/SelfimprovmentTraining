@@ -1,10 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
-using SeleniumExtras.WaitHelpers;
+﻿using OpenQA.Selenium;
 using SeleniumTrainingCenter.PageObjects.Interfaces;
 using System;
-using System.Configuration;
+using SeleniumTrainingCenter.InfoObjects;
 
 namespace SeleniumTrainingCenter.PageObjects
 {
@@ -19,33 +16,15 @@ namespace SeleniumTrainingCenter.PageObjects
             throw new NotImplementedException();
         }
 
-        public ILoginPage Register(object loginInfo)
+        public IRegisterPage Register(Person person)
         {
-            //PERSONAL
-            By FIRSTNAME_INPUT = By.CssSelector("#customer_firstname");
-            By LASTNAME_INPUT = By.CssSelector("#customer_lastname");
-            By EMAIL_INPUT = By.CssSelector("#email");
-            By PASSWORD_INPUT = By.CssSelector("#passwd");
+            By EMAIL_INPUT = By.CssSelector("#email_create");
+            By CREATEACCOUNT_BUTTON = By.CssSelector("#SubmitCreate");
 
-            By DAYS_SELECT = By.CssSelector("#days");
-            By MONTHS_SELECT = By.CssSelector("#uniform-months");
-            By YEARS_SELECT = By.CssSelector("#uniform-years");
-
-            //ADDRESS
-            By FIRSTNAME_ADDRESS_INPUT = By.CssSelector("[name=firstname]");
-            By LASTNAME_ADDRESS_INPUT = By.CssSelector("[name=lastname]");
-            By ADDRESS_INPUT = By.CssSelector("#address1");
-            By CITY_INPUT = By.CssSelector("#city");
-            By STATE_SELECT = By.CssSelector("#id_state");
-            By ZIP_INPUT = By.CssSelector("#postcode");
-            By COUNTY_SELECT = By.CssSelector("#id_country");
-            By PHONE_INPUT = By.CssSelector("#phone_mobile");
-
-            By REGISTER_BUTTON = By.CssSelector("#submitAccount");
-            
-            //GetElement(FIRSTNAME_INPUT).SendKeys();
-
-            return this;
+            GetElement(EMAIL_INPUT).SendKeys(person.Email);
+            GetElement(CREATEACCOUNT_BUTTON).Click();
+;
+            return new RegisterPage(this._driver);
         }
     }
 }

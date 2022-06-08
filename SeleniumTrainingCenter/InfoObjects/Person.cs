@@ -11,5 +11,15 @@ namespace SeleniumTrainingCenter.InfoObjects
         public string Email { get; set; }
         public string Password { get; set; }
         public DateOnly Birthday { get; set; }
+
+        public Person(Titles title, string fname, string lname, string email, string pass, DateOnly date)
+        {
+            Title = title;
+            FirstName = fname;
+            LastName = lname;
+            Email = email;
+            Password = pass;
+            Birthday = date;
+        }
     }
 }

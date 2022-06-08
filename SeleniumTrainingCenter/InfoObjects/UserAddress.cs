@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SeleniumTrainingCenter.InfoObjects
+﻿namespace SeleniumTrainingCenter.InfoObjects
 {
     public class UserAddress
     {
@@ -15,7 +9,18 @@ namespace SeleniumTrainingCenter.InfoObjects
         public string State { get; set; }
         public string PostalCode { get; set; }
         public string Country { get; set; }
-        public int Phone { get; set; }
+        public string Phone { get; set; }
 
+        public UserAddress(string fname, string lname, string address, string city, string state, string zip, string country, string phone)
+        {
+            FirstName = fname;
+            LastName = lname;
+            Address = address;
+            City = city;
+            State = state;
+            PostalCode = zip;
+            Country = country;
+            Phone = phone;
+        }
     }
 }

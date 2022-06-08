@@ -14,7 +14,7 @@ namespace SeleniumTrainingCenter.PageObjects
         {
             WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
 
-            return wait.Until(ExpectedConditions.ElementIsVisible(by));
+            return wait.Until(ExpectedConditions.ElementToBeClickable(by));
         }
 
         public bool DoesElementExist(string xPath)

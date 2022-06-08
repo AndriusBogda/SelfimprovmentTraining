@@ -1,0 +1,24 @@
+{
+  "allure": {
+    "directory": "allure-results",
+    "links": [
+      "{link}",
+      "{issue}",
+      "{tms}"
+    ]
+  },
+  "labels": {
+    "owner": "^owner:?(.+)"
+  },
+  "brokenTestData": [
+    "System.Exception"
+  ],
+  "exclude": [
+    "**/bin",
+    "**/bower_components",
+    "**/jspm_packages",
+    "**/node_modules",
+    "**/obj",
+    "**/platforms"
+  ]
+}

@@ -12,16 +12,16 @@ namespace SeleniumTrainingCenter.PageObjects
 
         protected virtual IWebElement GetElement(By by)
         {
-            WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+            WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(15));
 
-            return wait.Until(ExpectedConditions.ElementToBeClickable(by));
+            return wait.Until(ExpectedConditions.ElementExists(by));
         }
 
         public bool DoesElementExist(string xPath)
         {
             try
             {
-                GetElement(By.XPath(xPath));
+                GetElement(By.CssSelector(xPath));
 
                 return true;
             }

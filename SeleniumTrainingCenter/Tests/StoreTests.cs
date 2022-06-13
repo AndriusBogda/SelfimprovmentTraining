@@ -21,8 +21,11 @@ namespace SeleniumTrainingCenter.Tests
         private readonly string _storeLoginURL = @"http://automationpractice.com/index.php?controller=authentication&back=my-account";
 
         [Test]
-        public void TestLogin()
+        public void TestRegister()
         {
+            var LOGGEDIN_MESSAGE = "p.info-account";
+            var ACCOUNT_ALREADY_CREATED = "#create_account_error";
+
             var user = new Person
                         (
                             Titles.Mr,
@@ -32,25 +35,38 @@ namespace SeleniumTrainingCenter.Tests
                             Configuration["password"],
                             new DateOnly(2001, 03, 17)
                         );
-
-            var loginPage = new LoginPage(Driver, _storeLoginURL);
-            var registerPage = loginPage.Register(user);
-            var registeredUserPage = registerPage
-                .Register
-                (
-                    user,
-                    new UserAddress
+  
+            var address = new UserAddress
                         (
                             Configuration["fName"],
                             Configuration["lName"],
                             Configuration["address"],
                             Configuration["city"],
-                            "state",
-                            "123123",
+                            "Alaska",
+                            "12312",
                             "United States",
                             Configuration["phone"]
-                        )
-                );
+                        );
+
+            var loginPage = new LoginPage(Driver, _storeLoginURL);
+            var registerPage = loginPage.Register(user);
+            
+            if (registerPage.DoesElementExist(ACCOUNT_ALREADY_CREATED))
+            {
+                        Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(true);
+            }
+            else
+            {
+                var registeredUserPage = registerPage.Register(user, address);
+
+                Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(registeredUserPage.DoesElementExist(LOGGEDIN_MESSAGE));
+            }
+        }
+
+        [Test]
+        public void TestLogin()
+        {
+            
         }
     }
 }

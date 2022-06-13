@@ -23,8 +23,8 @@ namespace SeleniumTrainingCenter.PageObjects
             By PASSWORD_INPUT = By.CssSelector("#passwd");
 
             By DAYS_SELECT = By.CssSelector("#days");
-            By MONTHS_SELECT = By.CssSelector("#uniform-months");
-            By YEARS_SELECT = By.CssSelector("#uniform-years");
+            By MONTHS_SELECT = By.CssSelector("#months");
+            By YEARS_SELECT = By.CssSelector("#years");
 
             //ADDRESS
             By FIRSTNAME_ADDRESS_INPUT = By.CssSelector("[name=firstname]");
@@ -41,13 +41,11 @@ namespace SeleniumTrainingCenter.PageObjects
             //FILL PERSONAL INFO
             GetElement(FIRSTNAME_INPUT).SendKeys(person.FirstName);
             GetElement(LASTNAME_INPUT).SendKeys(person.LastName);
-
-            GetElement(EMAIL_INPUT).Clear(); 
+            GetElement(EMAIL_INPUT).Clear();
             GetElement(EMAIL_INPUT).SendKeys(person.Email);
-
             GetElement(PASSWORD_INPUT).SendKeys(person.Password);
             new SelectElement(GetElement(DAYS_SELECT)).SelectByValue(person.Birthday.Day.ToString());
-            new SelectElement(GetElement(MONTHS_SELECT)).SelectByValue(person.Birthday.Month.ToString());
+            new SelectElement(GetElement(MONTHS_SELECT)).SelectByIndex(person.Birthday.Month);
             new SelectElement(GetElement(YEARS_SELECT)).SelectByValue(person.Birthday.Year.ToString());
 
             //FILL ADDRESS INFO
@@ -57,10 +55,10 @@ namespace SeleniumTrainingCenter.PageObjects
             GetElement(CITY_INPUT).SendKeys(userAddress.City);
             GetElement(ZIP_INPUT).SendKeys(userAddress.PostalCode);
             GetElement(PHONE_INPUT).SendKeys(userAddress.Phone.ToString());
-            new SelectElement(GetElement(STATE_SELECT)).SelectByValue(userAddress.State);
-            new SelectElement(GetElement(COUNTRY_SELECT)).SelectByValue(userAddress.Country);
+            new SelectElement(GetElement(STATE_SELECT)).SelectByText(userAddress.State);
+            new SelectElement(GetElement(COUNTRY_SELECT)).SelectByText(userAddress.Country);
 
-            GetElement(REGISTER_BUTTON).Click();
+            //GetElement(REGISTER_BUTTON).Click();
 
             return this;
         }

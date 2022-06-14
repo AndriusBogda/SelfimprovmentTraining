@@ -62,13 +62,13 @@ namespace SeleniumTrainingCenter.Tests
             
             if (registerPage.DoesElementExist(ACCOUNT_ALREADY_CREATED))
             {
-                        Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(true);
+                        Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(true, "could not procceed to the register page");
             }
             else
             {
                 var registeredUserPage = registerPage.Register(user, address);
 
-                Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(registeredUserPage.DoesElementExist(LOGGEDIN_MESSAGE));
+                Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(registeredUserPage.DoesElementExist(LOGGEDIN_MESSAGE), "Could not register");
             }
         }
 
@@ -78,7 +78,7 @@ namespace SeleniumTrainingCenter.Tests
             var loginPage = new LoginPage(Driver, _storeLoginURL);
             var loggedIn = loginPage.Login(user);
 
-            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(loggedIn.DoesElementExist(LOGGEDIN_MESSAGE));
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(loggedIn.DoesElementExist(LOGGEDIN_MESSAGE), "Did not log in to the account page");
         }
 
         // Need to remove all wishlists before running
@@ -92,7 +92,7 @@ namespace SeleniumTrainingCenter.Tests
             var wishlists = new WishlistPage(Driver, _wishlist_url);
             if (wishlists.AreThereAnyWishlists())
             {
-                Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(false);
+                Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(false, "There already is a wishlist created");
             }
             else
             {
@@ -100,7 +100,7 @@ namespace SeleniumTrainingCenter.Tests
                 store.AddItemToWishlist();
                 wishlists = new WishlistPage(Driver, _wishlist_url);
 
-                Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(wishlists.AreThereAnyWishlists());
+                Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(wishlists.AreThereAnyWishlists(), "A wishlist was not created");
             }
         }
 
@@ -118,7 +118,7 @@ namespace SeleniumTrainingCenter.Tests
                 store.AddItemToWishlist();
                 wishlists = new WishlistPage(Driver, _wishlist_url);
 
-                Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(wishlists.AreThereAnyWishlists());
+                Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(wishlists.AreThereAnyWishlists(), "Did not find find a wishlist");
             }
             else
             {
@@ -128,7 +128,7 @@ namespace SeleniumTrainingCenter.Tests
                 store.AddItemToWishlist();
                 wishlists = new WishlistPage(Driver, _wishlist_url);
 
-                Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(wishlists.AreThereAnyWishlists());
+                Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(wishlists.AreThereAnyWishlists(), "did not find a wishlist");
             }
         }
 
@@ -145,7 +145,7 @@ namespace SeleniumTrainingCenter.Tests
             var cart = new CartPage(Driver, cart_url);
             cart.RefreshPage();
 
-            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(cart.AreThreeItemsAdded());
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(cart.AreThreeItemsAdded(), "could not find the default items in the cart page");
         }
     }
 }

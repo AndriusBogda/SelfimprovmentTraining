@@ -20,6 +20,8 @@ namespace SeleniumTrainingCenter.Tests.Bases
             get => _driver;
         }
 
+        
+
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
@@ -43,6 +45,8 @@ namespace SeleniumTrainingCenter.Tests.Bases
             {
                 throw new System.Exception("wrong url for remote web driver");
             }
+
+            _driver.Manage().Timeouts().ImplicitWait = System.TimeSpan.FromSeconds(2);
         }
 
         [TearDown]

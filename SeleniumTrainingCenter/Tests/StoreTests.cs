@@ -19,14 +19,17 @@ namespace SeleniumTrainingCenter.Tests
     public class StoreTests : BaseTest
     {
         private readonly string _storeLoginURL = @"http://automationpractice.com/index.php?controller=authentication&back=my-account";
+        private readonly string _wishlist_url = @"http://automationpractice.com/index.php?fc=module&module=blockwishlist&controller=mywishlist";
 
-        [Test]
-        public void TestRegister()
+        private string LOGGEDIN_MESSAGE = "p.info-account";
+
+        private Person user;
+        private UserAddress address;
+
+        [OneTimeSetUp]
+        public void SetupInfo()
         {
-            var LOGGEDIN_MESSAGE = "p.info-account";
-            var ACCOUNT_ALREADY_CREATED = "#create_account_error";
-
-            var user = new Person
+            user = new Person
                         (
                             Titles.Mr,
                             Configuration["fName"],
@@ -35,8 +38,8 @@ namespace SeleniumTrainingCenter.Tests
                             Configuration["password"],
                             new DateOnly(2001, 03, 17)
                         );
-  
-            var address = new UserAddress
+
+            address = new UserAddress
                         (
                             Configuration["fName"],
                             Configuration["lName"],
@@ -47,6 +50,12 @@ namespace SeleniumTrainingCenter.Tests
                             "United States",
                             Configuration["phone"]
                         );
+        }
+
+        [Test]
+        public void TestRegister()
+        {
+            var ACCOUNT_ALREADY_CREATED = "#create_account_error";
 
             var loginPage = new LoginPage(Driver, _storeLoginURL);
             var registerPage = loginPage.Register(user);
@@ -66,7 +75,77 @@ namespace SeleniumTrainingCenter.Tests
         [Test]
         public void TestLogin()
         {
-            
+            var loginPage = new LoginPage(Driver, _storeLoginURL);
+            var loggedIn = loginPage.Login(user);
+
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(loggedIn.DoesElementExist(LOGGEDIN_MESSAGE));
+        }
+
+        // Need to remove all wishlists before running
+        [Test]
+        public void TestAddToAutoWishlist()
+        {
+            var store_url = @"http://automationpractice.com/index.php?id_category=3&controller=category";
+
+            var loginPage = new LoginPage(Driver, _storeLoginURL);
+            loginPage.Login(user);
+            var wishlists = new WishlistPage(Driver, _wishlist_url);
+            if (wishlists.AreThereAnyWishlists())
+            {
+                Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(false);
+            }
+            else
+            {
+                var store = new StorePage(Driver, store_url);
+                store.AddItemToWishlist();
+                wishlists = new WishlistPage(Driver, _wishlist_url);
+
+                Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(wishlists.AreThereAnyWishlists());
+            }
+        }
+
+        [Test]
+        public void TestAddToWishlist()
+        {
+            var store_url = @"http://automationpractice.com/index.php?id_category=3&controller=category";
+
+            var loginPage = new LoginPage(Driver, _storeLoginURL);
+            loginPage.Login(user);
+            var wishlists = new WishlistPage(Driver, _wishlist_url);
+            if (wishlists.AreThereAnyWishlists())
+            {
+                var store = new StorePage(Driver, store_url);
+                store.AddItemToWishlist();
+                wishlists = new WishlistPage(Driver, _wishlist_url);
+
+                Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(wishlists.AreThereAnyWishlists());
+            }
+            else
+            {
+                wishlists.AddNewWishlist("newWishlist");
+
+                var store = new StorePage(Driver, store_url);
+                store.AddItemToWishlist();
+                wishlists = new WishlistPage(Driver, _wishlist_url);
+
+                Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(wishlists.AreThereAnyWishlists());
+            }
+        }
+
+        [Test]
+        public void TestAddToCart()//[alt='Faded Short Sleeve T-shirts']
+        {
+            var store_url = @"http://automationpractice.com/index.php?id_category=3&controller=category";
+            var cart_url = @"http://automationpractice.com/index.php?controller=order";
+
+            var loginPage = new LoginPage(Driver, _storeLoginURL);
+            loginPage.Login(user);
+            var store = new StorePage(Driver, store_url);
+            store.AddThreeItemsToCart();
+            var cart = new CartPage(Driver, cart_url);
+            cart.RefreshPage();
+
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(cart.AreThreeItemsAdded());
         }
     }
 }

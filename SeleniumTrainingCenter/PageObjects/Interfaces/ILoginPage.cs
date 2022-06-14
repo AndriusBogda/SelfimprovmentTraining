@@ -4,7 +4,7 @@ namespace SeleniumTrainingCenter.PageObjects.Interfaces
 {
     public interface ILoginPage : IPage
     {
-        public ILoginPage Login(object emailBy, object passwordBy);
+        public ILoginPage Login(Person person);
         public IRegisterPage Register(Person person);
     }
 }

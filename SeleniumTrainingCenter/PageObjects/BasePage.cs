@@ -3,6 +3,7 @@ using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using SeleniumTrainingCenter.PageObjects.Interfaces;
 using System;
+using System.Threading;
 
 namespace SeleniumTrainingCenter.PageObjects
 {
@@ -29,6 +30,12 @@ namespace SeleniumTrainingCenter.PageObjects
             {
                 return false;
             }
+        }
+
+        public void RefreshPage()
+        {
+            _driver.Navigate().Refresh();
+            Thread.Sleep(30);
         }
 
         public void TakeScreenshot(string path)

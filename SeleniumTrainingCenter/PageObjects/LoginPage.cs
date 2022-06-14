@@ -1,6 +1,5 @@
 ﻿using OpenQA.Selenium;
 using SeleniumTrainingCenter.PageObjects.Interfaces;
-using System;
 using SeleniumTrainingCenter.InfoObjects;
 
 namespace SeleniumTrainingCenter.PageObjects
@@ -11,9 +10,17 @@ namespace SeleniumTrainingCenter.PageObjects
         {
         }
 
-        public ILoginPage Login(object emailBy, object passwordBy)
+        public ILoginPage Login(Person person)
         {
-            throw new NotImplementedException();
+            By EMAIL_INPUT = By.CssSelector("#email");
+            By PASSWORD_INPUT = By.CssSelector("#passwd");
+            By LOGIN_BUTTON = By.CssSelector("#SubmitLogin");
+
+            GetElement(EMAIL_INPUT).SendKeys(person.Email);
+            GetElement(PASSWORD_INPUT).SendKeys(person.Password);
+            GetElement(LOGIN_BUTTON).Click();
+
+            return this;
         }
 
         public IRegisterPage Register(Person person)

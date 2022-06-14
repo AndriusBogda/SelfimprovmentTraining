@@ -1,6 +1,8 @@
 ﻿namespace SeleniumTrainingCenter.PageObjects.Interfaces
 {
-    internal interface IStorePage
+    public interface IStorePage
     {
+        public IStorePage AddItemToWishlist();
+        public IStorePage AddThreeItemsToCart();
     }
 }

@@ -6,6 +6,8 @@ namespace SeleniumTrainingCenter.PageObjects
 {
     public class MyAccountPage : BasePage, IMyAccountPage
     {
+        private By WOMENCLOTHING_HREF = By.CssSelector("a.sf-with-ul[Title='Women']");
+
         public MyAccountPage(IWebDriver driver, string url) : base(driver, url)
         {
         }
@@ -19,8 +21,6 @@ namespace SeleniumTrainingCenter.PageObjects
 
         public IStorePage OpenWomenClothing()
         {
-            var WOMENCLOTHING_HREF = By.CssSelector("a.sf-with-ul[Title='Women']");
-
             return new StorePage(_driver, GetElement(WOMENCLOTHING_HREF).GetAttribute("href"));
         }
     }

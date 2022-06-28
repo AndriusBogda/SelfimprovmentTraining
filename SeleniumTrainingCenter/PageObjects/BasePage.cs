@@ -7,10 +7,8 @@ using System.Threading;
 
 namespace SeleniumTrainingCenter.PageObjects
 {
-    public class BasePage : IPage
+    public class BasePage : Page,  IPage
     {
-        protected IWebDriver _driver;
-
         protected virtual IWebElement GetElement(By by)
         {
             WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(15));
@@ -51,15 +49,12 @@ namespace SeleniumTrainingCenter.PageObjects
             }
         }
 
-        public BasePage(IWebDriver driver)
+        public BasePage(IWebDriver driver) : base(driver)
         {
-            _driver = driver;
-            _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
         }
 
-        public BasePage(IWebDriver driver, string url) : this(driver)
+        public BasePage(IWebDriver driver, string url) : base(driver, url)
         {
-            driver.Navigate().GoToUrl(url);
         }
     }
 }

@@ -5,6 +5,10 @@ namespace SeleniumTrainingCenter.PageObjects
 {
     public class CartPage : BasePage, ICartPage
     {
+        private string FADED_TSHIRT = "[alt='Faded Short Sleeve T-shirts']";
+        private string BLOUSE = "[alt='Blouse']";
+        private string PRINTED_DRESS = "[alt='Printed Dress']";
+
         public CartPage(IWebDriver driver) : base(driver)
         {
         }
@@ -15,24 +19,10 @@ namespace SeleniumTrainingCenter.PageObjects
 
         public bool AreThreeItemsAdded()
         {
-            var FADED_TSHIRT = "[alt='Faded Short Sleeve T-shirts']";
-            var BLOUSE = "[alt='Blouse']";
-            var PRINTED_DRESS = "[alt='Printed Dress']";
-
-            if (!DoesElementExist(FADED_TSHIRT))
-            {
-                return false;
-            }
-            if (!DoesElementExist(BLOUSE))
-            {
-                return false;
-            }
-            if (!DoesElementExist(PRINTED_DRESS))
-            {
-                return false;
-            }
-
-            return true;
+            return
+            DoesElementExist(FADED_TSHIRT) &&
+            DoesElementExist(BLOUSE) &&
+            DoesElementExist(PRINTED_DRESS);
         }
     }
 }

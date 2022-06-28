@@ -7,6 +7,28 @@ namespace SeleniumTrainingCenter.PageObjects
 {
     public class RegisterPage : BasePage, IRegisterPage
     {
+        //PERSONAL
+        private By FIRSTNAME_INPUT = By.CssSelector("#customer_firstname");
+        private By LASTNAME_INPUT = By.CssSelector("#customer_lastname");
+        private By EMAIL_INPUT = By.CssSelector("#email");
+        private By PASSWORD_INPUT = By.CssSelector("#passwd");
+
+        private By DAYS_SELECT = By.CssSelector("#days");
+        private By MONTHS_SELECT = By.CssSelector("#months");
+        private By YEARS_SELECT = By.CssSelector("#years");
+
+        //ADDRESS
+        private By FIRSTNAME_ADDRESS_INPUT = By.CssSelector("[name=firstname]");
+        private By LASTNAME_ADDRESS_INPUT = By.CssSelector("[name=lastname]");
+        private By ADDRESS_INPUT = By.CssSelector("#address1");
+        private By CITY_INPUT = By.CssSelector("#city");
+        private By STATE_SELECT = By.CssSelector("#id_state");
+        private By ZIP_INPUT = By.CssSelector("#postcode");
+        private By COUNTRY_SELECT = By.CssSelector("#id_country");
+        private By PHONE_INPUT = By.CssSelector("#phone_mobile");
+
+        private By REGISTER_BUTTON = By.CssSelector("#submitAccount");
+
         public RegisterPage(IWebDriver driver) : base(driver)
         {
         }
@@ -16,28 +38,6 @@ namespace SeleniumTrainingCenter.PageObjects
 
         public IRegisterPage Register(Person person, UserAddress userAddress)
         {
-            //PERSONAL
-            By FIRSTNAME_INPUT = By.CssSelector("#customer_firstname");
-            By LASTNAME_INPUT = By.CssSelector("#customer_lastname");
-            By EMAIL_INPUT = By.CssSelector("#email");
-            By PASSWORD_INPUT = By.CssSelector("#passwd");
-
-            By DAYS_SELECT = By.CssSelector("#days");
-            By MONTHS_SELECT = By.CssSelector("#months");
-            By YEARS_SELECT = By.CssSelector("#years");
-
-            //ADDRESS
-            By FIRSTNAME_ADDRESS_INPUT = By.CssSelector("[name=firstname]");
-            By LASTNAME_ADDRESS_INPUT = By.CssSelector("[name=lastname]");
-            By ADDRESS_INPUT = By.CssSelector("#address1");
-            By CITY_INPUT = By.CssSelector("#city");
-            By STATE_SELECT = By.CssSelector("#id_state");
-            By ZIP_INPUT = By.CssSelector("#postcode");
-            By COUNTRY_SELECT = By.CssSelector("#id_country");
-            By PHONE_INPUT = By.CssSelector("#phone_mobile");
-
-            By REGISTER_BUTTON = By.CssSelector("#submitAccount");
-
             //FILL PERSONAL INFO
             GetElement(FIRSTNAME_INPUT).SendKeys(person.FirstName);
             GetElement(LASTNAME_INPUT).SendKeys(person.LastName);

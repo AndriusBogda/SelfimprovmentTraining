@@ -3,8 +3,12 @@ using SeleniumTrainingCenter.PageObjects.Interfaces;
 
 namespace SeleniumTrainingCenter.PageObjects
 {
-    internal class StorePage : BasePage, IStorePage
+    public class StorePage : BasePage, IStorePage
     {
+        private By ADD_TO_CART_CLOTHINGONE = By.XPath("//a[@data-id-product='1'][descendant::span]");
+        private By ADD_TO_CART_CLOTHINGTWO = By.XPath("//a[@data-id-product='2'][descendant::span]");
+        private By ADD_TO_CART_CLOTHINGTHREE = By.XPath("//a[@data-id-product='3'][descendant::span]");
+
         public StorePage(IWebDriver driver) : base(driver)
         {
         }
@@ -23,10 +27,6 @@ namespace SeleniumTrainingCenter.PageObjects
 
         public IStorePage AddThreeItemsToCart()
         {
-            var ADD_TO_CART_CLOTHINGONE = By.XPath("//a[@data-id-product='1'][descendant::span]");
-            var ADD_TO_CART_CLOTHINGTWO = By.XPath("//a[@data-id-product='2'][descendant::span]");
-            var ADD_TO_CART_CLOTHINGTHREE = By.XPath("//a[@data-id-product='3'][descendant::span]");
-
             GetElement(ADD_TO_CART_CLOTHINGONE).Click();
             GetElement(ADD_TO_CART_CLOTHINGTWO).Click();
             GetElement(ADD_TO_CART_CLOTHINGTHREE).Click();

@@ -5,6 +5,11 @@ namespace SeleniumTrainingCenter.PageObjects
 {
     public class WishlistPage : BasePage, IWishListPage
     {
+        private By WISHLIST_NAME_INPUT = By.CssSelector("#name");
+        private By WISHLIST_CREATE_BUTTON = By.CssSelector("#submitWishlist");
+
+        private string WISHLIST_TABLE = "#block-history";
+
         public WishlistPage(IWebDriver driver) : base(driver)
         {
         }
@@ -15,17 +20,12 @@ namespace SeleniumTrainingCenter.PageObjects
 
         public void AddNewWishlist(string wishlistName)
         {
-            var WISHLIST_NAME_INPUT = By.CssSelector("#name");
-            var WISHLIST_CREATE_BUTTON = By.CssSelector("#submitWishlist");
-
             GetElement(WISHLIST_NAME_INPUT).SendKeys(wishlistName);
             GetElement(WISHLIST_CREATE_BUTTON).Click();
         }
 
         public bool AreThereAnyWishlists()
         {
-            var WISHLIST_TABLE = "#block-history";
-
             return base.DoesElementExist(WISHLIST_TABLE);
         }
     }

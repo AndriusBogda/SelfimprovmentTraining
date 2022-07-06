@@ -7,8 +7,6 @@ using System;
 using NUnit.Framework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SeleniumTrainingCenter.Tests.Bases;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 
 namespace SeleniumTrainingCenter.Tests
 {

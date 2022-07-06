@@ -36,6 +36,11 @@ namespace SeleniumTrainingCenter.PageObjects
             Thread.Sleep(30);
         }
 
+        public void Load(string url)
+        {
+            _driver.Navigate().GoToUrl(url);
+        }
+
         public void TakeScreenshot(string path)
         {
             try

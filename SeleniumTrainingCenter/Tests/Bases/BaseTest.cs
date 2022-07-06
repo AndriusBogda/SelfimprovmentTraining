@@ -4,6 +4,7 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Remote;
+using SeleniumTrainingCenter.Providers;
 using System;
 using System.Collections.Generic;
 
@@ -13,10 +14,12 @@ namespace SeleniumTrainingCenter.Tests.Bases
     {
         private static IWebDriver _driver;
         private static int _switchState = 0;
+        private static PageProvider _pageProvider;
 
         private static string _url = @"http://localhost:4444/wd/hub/";
 
         protected IConfiguration Configuration { get; set; }
+        protected PageProvider PageProvider => _pageProvider;
 
         protected static IWebDriver Driver
         {
@@ -69,14 +72,15 @@ namespace SeleniumTrainingCenter.Tests.Bases
         {
             try
             {
-                _driver = new RemoteWebDriver(new System.Uri(_url), new ChromeOptions());
-                //_driver = new ChromeDriver();
+                //_driver = new RemoteWebDriver(new System.Uri(_url), new ChromeOptions());
+                _driver = new ChromeDriver();
             }
             catch
             {
                 throw new System.Exception("wrong url for remote web driver");
             }
 
+            _pageProvider = new(_driver);
             _driver.Manage().Timeouts().ImplicitWait = System.TimeSpan.FromSeconds(2);
         }
 

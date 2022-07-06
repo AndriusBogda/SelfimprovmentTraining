@@ -13,6 +13,9 @@ namespace SeleniumTrainingCenter.PageObjects
         private By EMAIL_CREATE_INPUT = By.CssSelector("#email_create");
         private By CREATEACCOUNT_BUTTON = By.CssSelector("#SubmitCreate");
 
+        public LoginPage(IWebDriver driver) : base(driver)
+        {
+        }
         public LoginPage(IWebDriver driver, string url) : base(driver, url)
         {
         }

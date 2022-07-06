@@ -7,6 +7,7 @@ using System;
 using NUnit.Framework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SeleniumTrainingCenter.Tests.Bases;
+using SeleniumTrainingCenter.Providers;
 
 namespace SeleniumTrainingCenter.Tests
 {
@@ -16,8 +17,9 @@ namespace SeleniumTrainingCenter.Tests
     [TestClass]
     public class StoreTests : BaseTest
     {
-        private readonly string _storeLoginURL = @"http://automationpractice.com/index.php?controller=authentication&back=my-account";
+        private static readonly string _storeLoginURL = @"http://automationpractice.com/index.php?controller=authentication&back=my-account";
         private readonly string _wishlist_url = @"http://automationpractice.com/index.php?fc=module&module=blockwishlist&controller=mywishlist";
+        private readonly string _store_url = @"http://automationpractice.com/index.php?id_category=3&controller=category";
 
         private string LOGGEDIN_MESSAGE = "p.info-account";
 
@@ -55,7 +57,8 @@ namespace SeleniumTrainingCenter.Tests
         {
             var ACCOUNT_ALREADY_CREATED = "#create_account_error";
 
-            var loginPage = new LoginPage(Driver, _storeLoginURL);
+            var loginPage = PageProvider.LoginPage;
+            loginPage.Load(_storeLoginURL);
             var registerPage = loginPage.Register(user);
             
             if (registerPage.DoesElementExist(ACCOUNT_ALREADY_CREATED))
@@ -73,7 +76,8 @@ namespace SeleniumTrainingCenter.Tests
         [Test]
         public void TestLogin()
         {
-            var loginPage = new LoginPage(Driver, _storeLoginURL);
+            var loginPage = PageProvider.LoginPage;
+            loginPage.Load(_storeLoginURL);
             var loggedIn = loginPage.Login(user);
 
             Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(loggedIn.DoesElementExist(LOGGEDIN_MESSAGE), "Did not log in to the account page");
@@ -83,20 +87,22 @@ namespace SeleniumTrainingCenter.Tests
         [Test]
         public void TestAddToAutoWishlist()
         {
-            var store_url = @"http://automationpractice.com/index.php?id_category=3&controller=category";
-
-            var loginPage = new LoginPage(Driver, _storeLoginURL);
+            var loginPage = PageProvider.LoginPage;
+            loginPage.Load(_storeLoginURL);
             loginPage.Login(user);
-            var wishlists = new WishlistPage(Driver, _wishlist_url);
+            var wishlists = PageProvider.WishlistPage;
+            wishlists.Load(_wishlist_url);
             if (wishlists.AreThereAnyWishlists())
             {
                 Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(false, "There already is a wishlist created");
             }
             else
             {
-                var store = new StorePage(Driver, store_url);
+                var store = PageProvider.StorePage;
+                store.Load(_store_url);
                 store.AddItemToWishlist();
-                wishlists = new WishlistPage(Driver, _wishlist_url);
+                wishlists = PageProvider.WishlistPage;
+                wishlists.Load(_wishlist_url);
 
                 Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(wishlists.AreThereAnyWishlists(), "A wishlist was not created");
             }
@@ -107,14 +113,14 @@ namespace SeleniumTrainingCenter.Tests
         {
             var store_url = @"http://automationpractice.com/index.php?id_category=3&controller=category";
 
-            var loginPage = new LoginPage(Driver, _storeLoginURL);
+            var loginPage = PageProvider.LoginPage;
             loginPage.Login(user);
-            var wishlists = new WishlistPage(Driver, _wishlist_url);
+            var wishlists = PageProvider.WishlistPage;
             if (wishlists.AreThereAnyWishlists())
             {
-                var store = new StorePage(Driver, store_url);
+                var store = PageProvider.StorePage;
                 store.AddItemToWishlist();
-                wishlists = new WishlistPage(Driver, _wishlist_url);
+                wishlists = PageProvider.WishlistPage;
 
                 Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(wishlists.AreThereAnyWishlists(), "Did not find find a wishlist");
             }
@@ -122,9 +128,9 @@ namespace SeleniumTrainingCenter.Tests
             {
                 wishlists.AddNewWishlist("newWishlist");
 
-                var store = new StorePage(Driver, store_url);
+                var store = PageProvider.StorePage;
                 store.AddItemToWishlist();
-                wishlists = new WishlistPage(Driver, _wishlist_url);
+                wishlists = PageProvider.WishlistPage;
 
                 Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(wishlists.AreThereAnyWishlists(), "did not find a wishlist");
             }
@@ -136,12 +142,12 @@ namespace SeleniumTrainingCenter.Tests
             var store_url = @"http://automationpractice.com/index.php?id_category=3&controller=category";
             var cart_url = @"http://automationpractice.com/index.php?controller=order";
 
-            var loginPage = new LoginPage(Driver, _storeLoginURL);
+            var loginPage = PageProvider.LoginPage;
             loginPage.Login(user);
-            var store = new StorePage(Driver, store_url);
+            var store = PageProvider.StorePage;
             store.AddThreeItemsToCart();
-            var cart = new CartPage(Driver, cart_url);
-            cart.RefreshPage();
+            var cart = PageProvider.CartPage;
+            //cart.RefreshPage();
 
             Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(cart.AreThreeItemsAdded(), "could not find the default items in the cart page");
         }

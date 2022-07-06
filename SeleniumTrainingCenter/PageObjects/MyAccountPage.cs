@@ -8,6 +8,9 @@ namespace SeleniumTrainingCenter.PageObjects
     {
         private By WOMENCLOTHING_HREF = By.CssSelector("a.sf-with-ul[Title='Women']");
 
+        public MyAccountPage(IWebDriver driver) : base(driver)
+        {
+        }
         public MyAccountPage(IWebDriver driver, string url) : base(driver, url)
         {
         }

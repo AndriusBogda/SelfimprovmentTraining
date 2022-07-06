@@ -24,15 +24,15 @@ namespace SeleniumTrainingCenter.Providers
         public IStorePage StorePage => _StorePage;
         public IWishListPage WishlistPage => _WishlistPage;
 
-        public PageProvider(IWebDriver driver, string url)
+        public PageProvider(IWebDriver driver)
         {
-            _BasePage = new BasePage(driver, url);
-            _CartPage = new CartPage(driver, url);
-            _LoginPage = new LoginPage(driver, url);
-            _MyAccountPage = new MyAccountPage(driver, url);
-            _RegisterPage = new RegisterPage(driver, url);
-            _StorePage = new StorePage(driver, url);
-            _WishlistPage = new WishlistPage(driver, url);
+            _BasePage = new BasePage(driver);
+            _CartPage = new CartPage(driver);
+            _LoginPage = new LoginPage(driver);
+            _MyAccountPage = new MyAccountPage(driver);
+            _RegisterPage = new RegisterPage(driver);
+            _StorePage = new StorePage(driver);
+            _WishlistPage = new WishlistPage(driver);
         }
     }
 }

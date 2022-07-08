@@ -16,6 +16,27 @@ namespace SeleniumTrainingCenter.PageObjects
             return wait.Until(ExpectedConditions.ElementExists(by));
         }
 
+        public bool IsElementVisible(By by)
+        {
+            return GetElement(by).Displayed;
+        }
+
+        public bool IsElementClickable(By by)
+        {
+            WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(15));
+
+            try
+            {
+                wait.Until(ExpectedConditions.ElementToBeClickable(by));
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public bool DoesElementExist(string xPath)
         {
             try
@@ -27,6 +48,49 @@ namespace SeleniumTrainingCenter.PageObjects
             catch
             {
                 return false;
+            }
+        }
+
+        public void WaitUntilMethodMatchesCondition(bool expected, Func<By, bool> method, By by)
+        {
+            Thread thread = new Thread
+                (() =>{ 
+
+                });
+
+            while(true)
+            {
+                if (method(by) == expected)
+                {
+                    return;
+                }
+            }
+        }
+
+        public void ValidateDropdown(string[] expected, By by)
+        {
+            var dropdown = GetElement(by);
+            SelectElement select = new(dropdown);
+
+            bool isMatch;
+
+            var elements = select.Options;
+            foreach (var element in elements)
+            {
+                isMatch = false;
+
+                foreach (var item in expected)
+                {
+                    if (element.Text == item)
+                    {
+                        isMatch = true;
+                    }
+                }
+
+                if (!isMatch)
+                {
+                    throw new InvalidSelectorException($"expected element was not found in {by.ToString()} select");
+                }
             }
         }
 

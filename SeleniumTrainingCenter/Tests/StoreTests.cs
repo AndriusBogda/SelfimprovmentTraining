@@ -20,6 +20,7 @@ namespace SeleniumTrainingCenter.Tests
         private static readonly string _storeLoginURL = @"http://automationpractice.com/index.php?controller=authentication&back=my-account";
         private readonly string _wishlist_url = @"http://automationpractice.com/index.php?fc=module&module=blockwishlist&controller=mywishlist";
         private readonly string _store_url = @"http://automationpractice.com/index.php?id_category=3&controller=category";
+        private readonly string cart_url = @"http://automationpractice.com/index.php?controller=order";
 
         private string LOGGEDIN_MESSAGE = "p.info-account";
 
@@ -56,9 +57,19 @@ namespace SeleniumTrainingCenter.Tests
         public void TestRegister()
         {
             var ACCOUNT_ALREADY_CREATED = "#create_account_error";
-
             var loginPage = PageProvider.LoginPage;
             loginPage.Load(_storeLoginURL);
+
+            try
+            {
+                AssertLocation(_storeLoginURL);
+            }
+            catch
+            {
+                loginPage.Load(_storeLoginURL);
+                loginPage.RefreshPage();
+            }
+
             var registerPage = loginPage.Register(user);
             
             if (registerPage.DoesElementExist(ACCOUNT_ALREADY_CREATED))
@@ -68,7 +79,7 @@ namespace SeleniumTrainingCenter.Tests
             else
             {
                 var registeredUserPage = registerPage.Register(user, address);
-
+                
                 Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(registeredUserPage.DoesElementExist(LOGGEDIN_MESSAGE), "Could not register");
             }
         }
@@ -78,6 +89,17 @@ namespace SeleniumTrainingCenter.Tests
         {
             var loginPage = PageProvider.LoginPage;
             loginPage.Load(_storeLoginURL);
+
+            try
+            {
+                AssertLocation(_storeLoginURL);
+            }
+            catch
+            {
+                loginPage.Load(_storeLoginURL);
+                loginPage.RefreshPage();
+            }
+
             var loggedIn = loginPage.Login(user);
 
             Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(loggedIn.DoesElementExist(LOGGEDIN_MESSAGE), "Did not log in to the account page");
@@ -89,9 +111,31 @@ namespace SeleniumTrainingCenter.Tests
         {
             var loginPage = PageProvider.LoginPage;
             loginPage.Load(_storeLoginURL);
+
+            try
+            {
+                AssertLocation(_storeLoginURL);
+            }
+            catch
+            {
+                loginPage.Load(_storeLoginURL);
+                loginPage.RefreshPage();
+            }
+
             loginPage.Login(user);
             var wishlists = PageProvider.WishlistPage;
             wishlists.Load(_wishlist_url);
+
+            try
+            {
+                AssertLocation(_wishlist_url);
+            }
+            catch
+            {
+                wishlists.Load(_wishlist_url);
+                wishlists.RefreshPage();
+            }
+
             if (wishlists.AreThereAnyWishlists())
             {
                 Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(false, "There already is a wishlist created");
@@ -100,9 +144,30 @@ namespace SeleniumTrainingCenter.Tests
             {
                 var store = PageProvider.StorePage;
                 store.Load(_store_url);
+
+                try
+                {
+                    AssertLocation(_store_url);
+                }
+                catch
+                {
+                    store.Load(_store_url);
+                    store.RefreshPage();
+                }
+
                 store.AddItemToWishlist();
                 wishlists = PageProvider.WishlistPage;
                 wishlists.Load(_wishlist_url);
+
+                try
+                {
+                    AssertLocation(_wishlist_url);
+                }
+                catch
+                {
+                    wishlists.Load(_wishlist_url);
+                    wishlists.RefreshPage();
+                }
 
                 Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(wishlists.AreThereAnyWishlists(), "A wishlist was not created");
             }
@@ -111,16 +176,51 @@ namespace SeleniumTrainingCenter.Tests
         [Test]
         public void TestAddToWishlist()
         {
-            var store_url = @"http://automationpractice.com/index.php?id_category=3&controller=category";
-
             var loginPage = PageProvider.LoginPage;
+            loginPage.Load(_storeLoginURL);
+
+            try
+            {
+                AssertLocation(_storeLoginURL);
+            }
+            catch
+            {
+                loginPage.Load(_storeLoginURL);
+                loginPage.RefreshPage();
+            }
+
             loginPage.Login(user);
             var wishlists = PageProvider.WishlistPage;
+            wishlists.Load(_wishlist_url);
+
             if (wishlists.AreThereAnyWishlists())
             {
                 var store = PageProvider.StorePage;
+                store.Load(_store_url);
+
+                try
+                {
+                    AssertLocation(_store_url);
+                }
+                catch
+                {
+                    store.Load(_store_url);
+                    store.RefreshPage();
+                }
+
                 store.AddItemToWishlist();
                 wishlists = PageProvider.WishlistPage;
+                wishlists.Load(_wishlist_url);
+
+                try
+                {
+                    AssertLocation(_wishlist_url);
+                }
+                catch
+                {
+                    wishlists.Load(_wishlist_url);
+                    wishlists.RefreshPage();
+                }
 
                 Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(wishlists.AreThereAnyWishlists(), "Did not find find a wishlist");
             }
@@ -129,8 +229,31 @@ namespace SeleniumTrainingCenter.Tests
                 wishlists.AddNewWishlist("newWishlist");
 
                 var store = PageProvider.StorePage;
+                store.Load(_store_url);
+
+                try
+                {
+                    AssertLocation(_store_url);
+                }
+                catch
+                {
+                    store.Load(_store_url);
+                    store.RefreshPage();
+                }
+
                 store.AddItemToWishlist();
                 wishlists = PageProvider.WishlistPage;
+                wishlists.Load(_wishlist_url);
+
+                try
+                {
+                    AssertLocation(_wishlist_url);
+                }
+                catch
+                {
+                    wishlists.Load(_wishlist_url);
+                    wishlists.RefreshPage();
+                }
 
                 Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(wishlists.AreThereAnyWishlists(), "did not find a wishlist");
             }
@@ -139,14 +262,46 @@ namespace SeleniumTrainingCenter.Tests
         [Test]
         public void TestAddToCart()//[alt='Faded Short Sleeve T-shirts']
         {
-            var store_url = @"http://automationpractice.com/index.php?id_category=3&controller=category";
-            var cart_url = @"http://automationpractice.com/index.php?controller=order";
-
             var loginPage = PageProvider.LoginPage;
+            loginPage.Load(_storeLoginURL);
+
+            try
+            {
+                AssertLocation(_storeLoginURL);
+            }
+            catch
+            {
+                loginPage.Load(_storeLoginURL);
+                loginPage.RefreshPage();
+            }
+
             loginPage.Login(user);
             var store = PageProvider.StorePage;
+            store.Load(_store_url);
+
+            try
+            {
+                AssertLocation(_store_url);
+            }
+            catch
+            {
+                store.Load(_store_url);
+                store.RefreshPage();
+            }
+
             store.AddThreeItemsToCart();
             var cart = PageProvider.CartPage;
+            cart.Load(cart_url);
+
+            try
+            {
+                AssertLocation(cart_url);
+            }
+            catch
+            {
+                cart.Load(cart_url);
+                cart.RefreshPage();
+            }
             //cart.RefreshPage();
 
             Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(cart.AreThreeItemsAdded(), "could not find the default items in the cart page");

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SeleniumTrainingCenter.PageObjects.Interfaces
 {
-    public interface ICartPage
+    public interface ICartPage : IPage
     {
         public bool AreThreeItemsAdded();
     }

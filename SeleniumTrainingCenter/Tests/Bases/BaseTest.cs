@@ -26,7 +26,7 @@ namespace SeleniumTrainingCenter.Tests.Bases
             get => _driver;
         }
 
-        public void Switch(DriverOptions driverOptions)
+        protected void Switch(DriverOptions driverOptions)
         {
             _switchState++; 
             if (_switchState == 0)
@@ -54,6 +54,11 @@ namespace SeleniumTrainingCenter.Tests.Bases
             {
                 _switchState = 0;
             }
+        }
+
+        protected void AssertLocation(string url)
+        {
+            Assert.IsTrue(url == Driver.Url, "Incorrect page url is displayed");
         }
 
         [OneTimeSetUp]

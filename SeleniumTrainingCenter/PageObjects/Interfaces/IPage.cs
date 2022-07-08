@@ -7,5 +7,7 @@
         void TakeScreenshot(string path);
 
         void Load(string url);
+
+        void RefreshPage();
     }
 }

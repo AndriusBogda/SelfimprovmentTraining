@@ -124,6 +124,7 @@ namespace SeleniumTrainingCenter.PageObjects
                     if (element.ToLower() == item.Text.ToLower())
                     {
                         isMatch = true;
+                        break;
                     }
                 }
 
@@ -148,10 +149,11 @@ namespace SeleniumTrainingCenter.PageObjects
 
                 foreach (var listElement in listElements)
                 {
-                    var a = listElement.GetDomProperty("text").ToString().ToLower();
+                    var a = listElement.GetDomProperty("textContent").ToString().ToLower();
                     if (a.Contains(expectedElement.ToLower()))
                     {
                         isMatch = true;
+                        break;
                     }
                 }
 

@@ -30,10 +30,10 @@ namespace SeleniumTrainingCenter.Tests
 
         private readonly string _inputField = "input#search";
         // --
-        private readonly string _dropdownDivURL = @"https://www.dropdownmenugenerator.com/";
+        private readonly string _dropdownUlURL = @"https://getbootstrap.com/";
         private readonly string _dropdownListURL = @"https://demo.guru99.com/test/newtours/register.php";
 
-        private readonly string _dropdownDiv = "#_rspMnuGnr + ul";
+        private readonly string _dropdownUl = ".dropdown-menu.dropdown-menu-end";
         private readonly string _selectDropdown = "select[name=country]";
 
         [Test]
@@ -92,18 +92,18 @@ namespace SeleniumTrainingCenter.Tests
         }
 
         [Test]
-        public void TestDivDropdown()
+        public void TestUlDropdown()
         {
             string[] expectedDropdownElements =
             {
-                "FAQ",
-                "blog"
+                "v5",
+                "v4"
             };
 
             var dropdownPage = PageProvider.BasePage;
-            dropdownPage.Load(_dropdownDivURL);
+            dropdownPage.Load(_dropdownUlURL);
 
-            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(dropdownPage.ValidateDropdown(expectedDropdownElements, _dropdownDiv), $"Expected element is not present in {_dropdownDiv} select element");
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(dropdownPage.ValidateDropdown(expectedDropdownElements, _dropdownUl), $"Expected element is not present in {_dropdownUl} select element");
         }
     }
 }

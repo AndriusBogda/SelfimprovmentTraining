@@ -3,6 +3,7 @@ using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using SeleniumTrainingCenter.PageObjects.Interfaces;
 using System;
+using System.Collections.ObjectModel;
 using System.Threading;
 
 namespace SeleniumTrainingCenter.PageObjects
@@ -16,18 +17,31 @@ namespace SeleniumTrainingCenter.PageObjects
             return wait.Until(ExpectedConditions.ElementExists(by));
         }
 
-        public bool IsElementVisible(By by)
+        protected virtual ReadOnlyCollection<IWebElement> GetElements(By by)
         {
-            return GetElement(by).Displayed;
+            WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(15));
+
+            return wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(by));
         }
 
-        public bool IsElementClickable(By by)
+        public bool IsElementVisible(string css)
+        {
+            return GetElement(By.CssSelector(css)).Displayed;
+        }
+
+        public bool HasTextChanged(string originalText, string css)
+        {
+            var a = GetText(css);
+            return a != originalText;
+        }
+
+        public bool IsElementClickable(string css)
         {
             WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(15));
 
             try
             {
-                wait.Until(ExpectedConditions.ElementToBeClickable(by));
+                wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(css)));
             }
             catch
             {
@@ -37,11 +51,20 @@ namespace SeleniumTrainingCenter.PageObjects
             return true;
         }
 
-        public bool DoesElementExist(string xPath)
+        public string GetText(string css)
+        {
+            var a = GetElement(By.CssSelector(css)).GetDomProperty("value");
+            return a;
+        }
+
+        // SELF NOTE:
+        // Instead of this method
+        // To check if elements exist should use FindElements and check if collection is empty or not.
+        public bool DoesElementExist(string css)
         {
             try
             {
-                GetElement(By.CssSelector(xPath));
+                GetElement(By.CssSelector(css));
 
                 return true;
             }
@@ -51,37 +74,54 @@ namespace SeleniumTrainingCenter.PageObjects
             }
         }
 
-        public void WaitUntilMethodMatchesCondition(bool expected, Func<By, bool> method, By by)
+        public bool WaitUntilMethodMatchesCondition(bool expected, Func<string, string, bool> method, string css, string methodString)
         {
-            Thread thread = new Thread
-                (() =>{ 
-
-                });
-
-            while(true)
+            try
             {
-                if (method(by) == expected)
+                while (method(methodString, css).CompareTo(expected) != 0)
                 {
-                    return;
                 }
+
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
 
-        public void ValidateDropdown(string[] expected, By by)
+        public bool WaitUntilMethodMatchesCondition(bool expected, Func<string, bool> method, string css)
         {
-            var dropdown = GetElement(by);
+            try
+            {
+                while (method(css).CompareTo(expected) != 0)
+                {
+                }
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        // Should be in a different PageObject
+        public bool ValidateSelectDropdown(string[] expected, string css)
+        {
+            var dropdown = GetElement(By.CssSelector(css));
             SelectElement select = new(dropdown);
 
             bool isMatch;
 
             var elements = select.Options;
-            foreach (var element in elements)
+            foreach (var element in expected)
             {
                 isMatch = false;
 
-                foreach (var item in expected)
+                foreach (var item in elements)
                 {
-                    if (element.Text == item)
+                    if (element.ToLower() == item.Text.ToLower())
                     {
                         isMatch = true;
                     }
@@ -89,9 +129,39 @@ namespace SeleniumTrainingCenter.PageObjects
 
                 if (!isMatch)
                 {
-                    throw new InvalidSelectorException($"expected element was not found in {by.ToString()} select");
+                    return false;
                 }
             }
+
+            return true;
+        }
+
+        public bool ValidateDropdown(string[] expected, string css)
+        {
+            var listElements = GetElements(By.CssSelector(css + " a"));
+
+            bool isMatch;
+
+            foreach (var expectedElement in expected)
+            {
+                isMatch = false;
+
+                foreach (var listElement in listElements)
+                {
+                    var a = listElement.GetDomProperty("text").ToString().ToLower();
+                    if (a.Contains(expectedElement.ToLower()))
+                    {
+                        isMatch = true;
+                    }
+                }
+
+                if (!isMatch)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public void RefreshPage()
@@ -116,6 +186,12 @@ namespace SeleniumTrainingCenter.PageObjects
             {
                 throw new ArgumentException("wrong given path");
             }
+        }
+
+        // different PageObject ?
+        public void SendKeys(string css, string keys)
+        {
+            GetElement(By.CssSelector(css)).SendKeys(keys);
         }
 
         public BasePage(IWebDriver driver) : base(driver)

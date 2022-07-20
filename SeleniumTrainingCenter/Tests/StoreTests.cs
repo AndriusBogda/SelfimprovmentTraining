@@ -13,7 +13,7 @@ namespace SeleniumTrainingCenter.Tests
 {
     [TestFixture(Description = "Automationpractice store tests")]
     [AllureNUnit]
-    [AllureLink("https://github.com/AndriusBogda/SeleniumTrainingCenter")]
+    [AllureLink("https://github.com/AndriusBogda/SelfimprovmentTraining")]
     [TestClass]
     public class StoreTests : BaseTest
     {
